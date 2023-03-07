@@ -5,6 +5,10 @@ from django.contrib.auth.models import User
 
 from django.contrib import messages
 
+from rest_framework import viewsets, permissions
+from .serializers import UserSerializer, GroupSerializer
+
+
 
 # Create your views here.
 
@@ -48,3 +52,16 @@ def handlesignup(request):
         messages.success(request, "signup success")
         return redirect("loginsignup/login.html")
     return render(request, 'loginsignup/signup.html')
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all().order_by('-date-joined')
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    queryset = Group.objects.all().order_by('-date-joined')
+    serializer_class = GroupSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
